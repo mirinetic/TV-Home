@@ -40,3 +40,27 @@ const ViewportScaler = ({ children }: ViewportScalerProps) => {
 };
 
 export default ViewportScaler;
+
+/**
+ * An overlay drawn at the same 1920x1080 scale as the screen (for the simulator panel, power screen
+ * and virtual remote, which sit outside the screen frame). Only its children take clicks.
+ */
+export const ScaledLayer = ({ children }: ViewportScalerProps) => {
+  const [scale, setScale] = useState(1);
+  useEffect(() => {
+    const update = () => setScale(Math.min(window.innerWidth / 1920, window.innerHeight / 1080));
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+  return (
+    <div className="fixed inset-0 z-[1000] flex items-center justify-center overflow-hidden pointer-events-none">
+      <div
+        style={{ width: '1920px', height: '1080px', transform: `scale(${scale})`, transformOrigin: 'center center', flexShrink: 0 }}
+        className="relative [&>*]:pointer-events-auto"
+      >
+        {children}
+      </div>
+    </div>
+  );
+};

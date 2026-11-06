@@ -7,7 +7,7 @@ import { ConnectedDevicesPopup } from './components/ConnectedDevicesPopup';
 import AppEditPopup from './components/AppEditPopup';
 import SimulatorHandle from './components/SimulatorHandle';
 import VirtualRemote from './components/VirtualRemote';
-import ViewportScaler from './components/ViewportScaler';
+import ViewportScaler, { ScaledLayer } from './components/ViewportScaler';
 import SearchPage from './pages/SearchPage';
 import VisionPage from './pages/VisionPage';
 import PrivacyPage from './pages/PrivacyPage';
@@ -2027,6 +2027,7 @@ export default function App() {
           </div>
         )}
       </ViewportScaler>
+      <ScaledLayer>
       {/* VIRTUAL D-PAD REMOTE & SIMULATOR HANDLE */}
       {showVirtualDPad && <VirtualRemote onClose={() => setShowVirtualDPad(false)} />}
       <SimulatorHandle onClick={() => setShowDashboard(true)} />
@@ -2335,6 +2336,7 @@ export default function App() {
           </motion.div>
         )}
       </AnimatePresence>
+      </ScaledLayer>
     </motion.div>
   );
 }
