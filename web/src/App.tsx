@@ -1587,11 +1587,19 @@ export default function App() {
                       </motion.section>
 
                       {/* COMEDY CONTENT ROW */}
-                      <section id="section-comedy" className="overflow-visible relative h-[480px]">
-                        <div className="h-14 mb-2">
-                          <span className="text-[22px] font-semibold tracking-tight text-white px-2">
-                            코미디 · 청춘
-                          </span>
+                      {/* THEMED ROW: a seasonal theme with its own backdrop, like the TV's "Summer Vibes" */}
+                      <section id="section-comedy" className="overflow-visible relative h-[600px] mt-6">
+                        {!isWireframeMode && (
+                          <div className="absolute -left-14 -right-14 -top-6 bottom-6 overflow-hidden pointer-events-none">
+                            <img src="/assets/contents/cb_thumb_09_05.webp" alt="" className="absolute right-0 top-0 h-full w-[1100px] object-cover opacity-60" />
+                            <div className="absolute inset-0 bg-gradient-to-r from-[#0b2a33] via-[#0b2a33]/85 to-transparent" />
+                            <div className="absolute inset-x-0 bottom-0 h-[200px] bg-gradient-to-t from-black to-transparent" />
+                            <div className="absolute inset-x-0 top-0 h-[60px] bg-gradient-to-b from-black to-transparent" />
+                          </div>
+                        )}
+                        <div className="relative h-[110px] mb-2 px-2 pt-6">
+                          <div className="text-[40px] font-semibold tracking-tight text-white/90 leading-none">청춘 감성 정주행</div>
+                          <div className="text-[20px] text-white/60 mt-3">웃음과 설렘이 필요한 밤에 · 코미디 · 청춘</div>
                         </div>
 
                         <div className="relative">

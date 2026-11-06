@@ -118,29 +118,32 @@ export const ContentCard = ({
       )}
     </motion.div>
     
-    {/* STYLE 0: one line under the focused card: service icon · title | kind */}
+    {/* STYLE 0: under the focused card, like the TV: the title, then service icon | kind | year */}
     {style === 0 && (
-      <div className="h-24 flex flex-col justify-start">
+      <div className="h-28 flex flex-col justify-start">
         <AnimatePresence>
           {focused && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className={`flex items-center gap-4 ${width} pr-2`}
+              className={`flex flex-col gap-2 ${width} pr-2`}
             >
               {isWireframeMode ? (
-                <>
-                  <div className="w-11 h-11 rounded-lg border border-cyan-500/30 bg-cyan-950/40 shrink-0" />
-                  <h4 className="text-[20px] font-mono text-cyan-400 animate-pulse truncate">[ TITLE: {title} ]</h4>
-                </>
+                <h4 className="text-[20px] font-mono text-cyan-400 animate-pulse truncate">[ TITLE: {title} ]</h4>
               ) : (
                 <>
-                  {icon && <img src={icon} alt={provider} className="w-11 h-11 rounded-lg object-cover shrink-0" />}
-                  <h4 className="text-[26px] font-semibold tracking-tight leading-tight text-white truncate">{title}</h4>
-                  {sublabel && <span className="w-px h-6 bg-white/30 shrink-0" />}
-                  {sublabel && <span className="text-[22px] font-medium tracking-tight text-white/55 whitespace-nowrap">{sublabel}</span>}
+                  <h4 className="text-[34px] font-semibold tracking-tight leading-tight text-white truncate">{title}</h4>
+                  <div className="flex items-center gap-3 text-[20px] text-white/70 whitespace-nowrap">
+                    {icon && <img src={icon} alt={provider} className="w-8 h-8 rounded-md object-cover shrink-0" />}
+                    {sublabel && sublabel.split(' · ').map((part, i) => (
+                      <React.Fragment key={i}>
+                        {(i > 0 || icon) && <span className="w-px h-4 bg-white/30" />}
+                        <span>{part}</span>
+                      </React.Fragment>
+                    ))}
+                  </div>
                 </>
               )}
             </motion.div>
