@@ -15,7 +15,7 @@ import HeroDetailPage from './pages/HeroDetailPage';
 import ContentDetailPage from './pages/ContentDetailPage';
 import AppDetailPage from './pages/AppDetailPage';
 import { launchApp } from './native';
-import { useUpdater, UpdatePrompt, UpdateSettings } from './update';
+import { useUpdater, UpdateSettings } from './update';
 import {
   RECOMMENDATIONS,
   APPS,
@@ -2030,8 +2030,6 @@ export default function App() {
           </div>
         )}
       </ViewportScaler>
-      <UpdatePrompt u={updater} />
-
       {/* VIRTUAL D-PAD REMOTE & SIMULATOR HANDLE */}
       {showVirtualDPad && <VirtualRemote onClose={() => setShowVirtualDPad(false)} />}
       <SimulatorHandle onClick={() => setShowDashboard(true)} />
