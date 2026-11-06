@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="128px" height="128px" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>home_i_icon_mode_art_normal</title>
+    <g id="home_i_icon_mode_art_normal" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.699999988">
+        <g id="Group" transform="translate(8, 8)">
+            <rect id="Rectangle-Copy-6" stroke="#979797" stroke-width="1.00625" fill="#D8D8D8" opacity="0" x="0.503125" y="0.503125" width="110.99375" height="110.99375"></rect>
+            <path d="M43.7311136,69.8100775 L28.4580315,69.8100775 C26.916782,69.8100775 25.6666667,68.5564139 25.6666667,67.0107918 L25.6666667,36.6326183 C25.6666667,35.0861544 26.916782,33.8333333 28.4580315,33.8333333 L83.541969,33.8333333 C85.084058,33.8333333 86.3333333,35.0861544 86.3333333,36.6326183 L86.3333333,67.0107918 C86.3333333,68.5564139 85.084058,69.8100775 83.541969,69.8100775 L65.3221674,69.8100775" id="Stroke-1" stroke="#FFFFFF" stroke-width="5.25" stroke-linecap="round"></path>
+            <line x1="65.4137931" y1="69.8100775" x2="73.7816092" y2="79.3333333" id="Stroke-3" stroke="#FFFFFF" stroke-width="5.25" stroke-linecap="round"></line>
+            <line x1="52.862069" y1="54.996124" x2="38.2183908" y2="79.3333333" id="Stroke-5" stroke="#FFFFFF" stroke-width="5.25" stroke-linecap="round"></line>
+        </g>
+    </g>
+</svg>
