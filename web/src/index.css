@@ -21,3 +21,9 @@
   background-size: 40px 40px !important;
 }
 
+
+/* the simulator dashboard's remote focus */
+.dashboard-container [data-dash-focus] {
+  outline: 3px solid #60a5fa !important;
+  outline-offset: 3px;
+}

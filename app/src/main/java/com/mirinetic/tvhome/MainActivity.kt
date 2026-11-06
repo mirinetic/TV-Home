@@ -80,15 +80,40 @@ class MainActivity : Activity() {
         return WebResourceResponse(mime, if (mime.startsWith("text/") || mime.endsWith("json") || mime.endsWith("xml")) "utf-8" else null, stream)
     }
 
+    private var backDown = false
+    private var backLong = false
+
+    // Back: a short press is Escape for the page; holding it opens the simulator settings (F2).
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         if (event.keyCode == KeyEvent.KEYCODE_BACK || event.keyCode == KeyEvent.KEYCODE_BUTTON_B) {
-            val type = if (event.action == KeyEvent.ACTION_DOWN) "keydown" else "keyup"
-            web.evaluateJavascript(
-                "window.dispatchEvent(new KeyboardEvent('$type',{key:'Escape',code:'Escape',keyCode:27,bubbles:true}))", null
-            )
+            when (event.action) {
+                KeyEvent.ACTION_DOWN -> if (event.repeatCount == 0) {
+                    backDown = true
+                    backLong = false
+                } else if (backDown && !backLong && event.repeatCount >= 8) {
+                    backLong = true
+                    key("F2")
+                }
+                KeyEvent.ACTION_UP -> {
+                    if (backDown && !backLong) key("Escape")
+                    backDown = false
+                    backLong = false
+                }
+            }
+            return true
+        }
+        if (event.keyCode == KeyEvent.KEYCODE_MENU && event.action == KeyEvent.ACTION_DOWN) {
+            key("F2")
             return true
         }
         return super.dispatchKeyEvent(event)
+    }
+
+    private fun key(name: String) {
+        val code = if (name == "Escape") 27 else 113
+        web.evaluateJavascript(
+            "['keydown','keyup'].forEach(function(t){window.dispatchEvent(new KeyboardEvent(t,{key:'$name',code:'$name',keyCode:$code,bubbles:true}))})", null
+        )
     }
 
     override fun onResume() {

@@ -31,6 +31,7 @@ import {
   GNB_MAP,
   GNB_LABELS,
   HERO_BANNERS,
+  Content,
   SECTIONS
 } from './constants';
 import {
@@ -155,7 +156,7 @@ export default function App() {
   const [showDashboard, setShowDashboard] = useState(false);
   const [isPowerOff, setIsPowerOff] = useState(false);
   const [initialFocusTarget, setInitialFocusTarget] = useState(1); // Default: Now Playing (1)
-  const [interactionMode, setInteractionMode] = useState(1); // 0: D-pad, 1: Hybrid
+  const [interactionMode, setInteractionMode] = useState(0); // 0: D-pad (default), 1: Hybrid (mouse too)
   const [gnbOrder, setGnbOrder] = useState(['ACCOUNT', 'SEARCH', 'DEVICES', 'SETTINGS', 'VISION', 'PRIVACY']);
   const [isDimmingEnabled, setIsDimmingEnabled] = useState(false);
   const [cardFocusStyle, setCardFocusStyle] = useState(0); // 0: Standard, 1: Minimal
@@ -191,6 +192,76 @@ export default function App() {
 
     return clamped + 'px';
   };
+
+  // Remote control for the simulator dashboard: arrows move between its buttons (nearest in that
+  // direction), OK presses, Back closes. Runs before the page's own key handlers while it is open.
+  useEffect(() => {
+    if (!showDashboard) return;
+    let cur: HTMLElement | null = null;
+    const items = () => Array.from(document.querySelectorAll<HTMLElement>('.dashboard-container button')).filter(b => b.offsetParent !== null);
+    const mark = (el: HTMLElement) => {
+      cur?.removeAttribute('data-dash-focus');
+      cur = el;
+      el.setAttribute('data-dash-focus', '');
+      const box = el.closest('.overflow-y-auto') as HTMLElement | null;
+      if (!box) return;
+      const br = box.getBoundingClientRect(), er = el.getBoundingClientRect(), k = br.height / box.clientHeight || 1;
+      if (er.bottom > br.bottom) box.scrollTop += (er.bottom - br.bottom) / k + 24;
+      else if (er.top < br.top) box.scrollTop -= (br.top - er.top) / k + 24;
+    };
+    const start = setTimeout(() => { const l = items(); if (l.length) mark(l[Math.min(1, l.length - 1)]); }, 350);
+    const onKey = (e: KeyboardEvent) => {
+      const k = e.key;
+      if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter', 'Escape', 'Backspace', 'F2', 'ContextMenu'].includes(k) && k.toLowerCase() !== 'o') return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      if (k === 'Escape' || k === 'Backspace' || k === 'F2' || k === 'ContextMenu' || k.toLowerCase() === 'o') { setShowDashboard(false); return; }
+      const list = items();
+      if (!list.length) return;
+      if (!cur || !list.includes(cur)) { mark(list[0]); return; }
+      if (k === 'Enter') {
+        const pressed = cur, at = list.indexOf(cur);
+        pressed.click();
+        setTimeout(() => { const l = items(); if (l.length) mark(l.includes(pressed) ? pressed : l[Math.min(at, l.length - 1)]); }, 60);
+        return;
+      }
+      // Rows follow the panel's order (the scrolled list, then the footer buttons): up/down go to the
+      // previous/next row and pick the button nearest in x; left/right stay in the row.
+      const at = list.indexOf(cur), r = cur.getBoundingClientRect(), cx = r.left + r.width / 2;
+      const sameRow = (a: HTMLElement, b: HTMLElement) => Math.abs(a.getBoundingClientRect().top - b.getBoundingClientRect().top) < 12;
+      let best: HTMLElement | null = null;
+      if (k === 'ArrowLeft' || k === 'ArrowRight') {
+        const n = list[at + (k === 'ArrowLeft' ? -1 : 1)];
+        if (n && sameRow(n, cur)) best = n;
+      } else {
+        const step = k === 'ArrowUp' ? -1 : 1;
+        let i = at + step;
+        while (i >= 0 && i < list.length && sameRow(list[i], cur)) i += step;
+        if (i >= 0 && i < list.length) {
+          // the row is the run of neighbouring buttons on the same line (footer buttons can share a y with the list)
+          let a0 = i, a1 = i;
+          while (a0 - 1 >= 0 && a0 - 1 !== at && sameRow(list[a0 - 1], list[i])) a0--;
+          while (a1 + 1 < list.length && a1 + 1 !== at && sameRow(list[a1 + 1], list[i])) a1++;
+          if (step > 0) a0 = i; else a1 = i;
+          const row = list.slice(a0, a1 + 1);
+          let bestD = Infinity;
+          for (const el of row) {
+            const q = el.getBoundingClientRect(), d = Math.abs(q.left + q.width / 2 - cx);
+            if (d < bestD) { bestD = d; best = el; }
+          }
+        }
+      }
+      if (best) mark(best);
+    };
+    window.addEventListener('keydown', onKey, true);
+    return () => { clearTimeout(start); window.removeEventListener('keydown', onKey, true); cur?.removeAttribute('data-dash-focus'); };
+  }, [showDashboard]);
+
+  // The card the detail page shows: the focused card of the focused row
+  const detailContent: Content | undefined = ({
+    row: RECOMMENDATIONS[rowIdx], comedy: COMEDY_MOVIES[comedyIdx], romance: ROMANCE_MOVIES[romanceIdx], doc: DOC_MOVIES[docIdx],
+    action: ACTION_MOVIES[actionIdx], thriller: THRILLER_MOVIES[thrillerIdx], drama: DRAMA_MOVIES[dramaIdx]
+  } as Record<string, Content | undefined>)[section];
 
   // Apply Initial Focus Logic
   const applyInitialFocus = useCallback((target: number) => {
@@ -234,7 +305,7 @@ export default function App() {
         break;
       case 3: // 넷플릭스 (앱 로우)
         setSection('apps');
-        setIdx(0);
+        setIdx(Math.max(0, APPS.findIndex(a => a.name === 'Netflix')));
         break;
     }
   }, []);
@@ -324,13 +395,13 @@ export default function App() {
       return; // Block all other keys when popup is visible
     }
 
-    // Global Dashboard Toggle
-    if (e.key.toLowerCase() === 'o') {
+    // Global Dashboard Toggle: 'o' on a keyboard, F2 / ContextMenu from the TV app (Back held down)
+    if (e.key.toLowerCase() === 'o' || e.key === 'F2' || e.key === 'ContextMenu') {
       setShowDashboard(prev => !prev);
       return;
     }
 
-    if (isPowerOff) return;
+    if (isPowerOff) { if (e.key === 'Enter') togglePower(); return; }   // OK turns the simulated TV back on
 
     if (currentPage !== 'home') return;
 
@@ -680,7 +751,7 @@ export default function App() {
         }
         break;
     }
-  }, [section, idx, popupIdx, rowIdx, comedyIdx, romanceIdx, docIdx, actionIdx, thrillerIdx, dramaIdx, settingsIdx, currentPage, heroIdx, gnbOrder, isAppEditPopupVisible, appEditIdx, isPowerOff]);
+  }, [section, idx, popupIdx, rowIdx, comedyIdx, romanceIdx, docIdx, actionIdx, thrillerIdx, dramaIdx, settingsIdx, currentPage, heroIdx, gnbOrder, isAppEditPopupVisible, appEditIdx, isPowerOff, togglePower]);
 
   const lastWheelTime = useRef<number>(0);
 
@@ -824,6 +895,7 @@ export default function App() {
         )}
         {currentPage === 'contentDetail' && (
           <ContentDetailPage
+            content={detailContent}
             isWireframeMode={isWireframeMode}
             onBack={() => {
               if ([4, 6, 7, 8, 9].includes(activeTab)) {
@@ -1393,7 +1465,8 @@ export default function App() {
                                 key={movie.id}
                                 focused={section === 'row' && rowIdx === i}
                                 title={movie.title}
-                                sublabel={movie.sub}
+                                sublabel={`${movie.kind} · ${movie.year}`}
+                                provider={movie.provider}
                                 img={movie.img}
                                 style={cardFocusStyle}
                                 isWireframeMode={isWireframeMode}
@@ -1538,7 +1611,8 @@ export default function App() {
                                 key={movie.id}
                                 focused={section === 'comedy' && comedyIdx === i}
                                 title={movie.title}
-                                sublabel={movie.sub}
+                                sublabel={`${movie.kind} · ${movie.year}`}
+                                provider={movie.provider}
                                 img={movie.img}
                                 style={cardFocusStyle}
                                 isWireframeMode={isWireframeMode}
@@ -1591,7 +1665,8 @@ export default function App() {
                                 key={movie.id}
                                 focused={section === 'romance' && romanceIdx === i}
                                 title={movie.title}
-                                sublabel={movie.sub}
+                                sublabel={`${movie.kind} · ${movie.year}`}
+                                provider={movie.provider}
                                 img={movie.img}
                                 style={cardFocusStyle}
                                 isWireframeMode={isWireframeMode}
@@ -1617,14 +1692,14 @@ export default function App() {
                       <section id="section-doc" className="overflow-visible relative h-[480px] -mt-10">
                         <div className="h-14 mb-2">
                           <span className="text-[22px] font-semibold tracking-tight text-white px-2">
-                            다큐멘터리
+                            오늘의 TOP 10
                           </span>
                         </div>
 
                         <div className="relative">
                           <motion.div
                             animate={{
-                              x: -docScrollIdx * (440 + 32)
+                              x: -docScrollIdx * (140 + 440 + 32)   // rank number + card
                             }}
                             transition={{ type: 'tween', duration: 0.15, ease: 'easeOut' }}
                             onPanEnd={(_, info) => {
@@ -1644,7 +1719,9 @@ export default function App() {
                                 key={movie.id}
                                 focused={section === 'doc' && docIdx === i}
                                 title={movie.title}
-                                sublabel={movie.sub}
+                                sublabel={`${movie.kind} · ${movie.year}`}
+                                provider={movie.provider}
+                                rank={i + 1}
                                 img={movie.img}
                                 style={cardFocusStyle}
                                 isWireframeMode={isWireframeMode}
@@ -1697,7 +1774,8 @@ export default function App() {
                                 key={movie.id}
                                 focused={section === 'action' && actionIdx === i}
                                 title={movie.title}
-                                sublabel={movie.sub}
+                                sublabel={`${movie.kind} · ${movie.year}`}
+                                provider={movie.provider}
                                 img={movie.img}
                                 style={cardFocusStyle}
                                 isWireframeMode={isWireframeMode}
@@ -1750,7 +1828,8 @@ export default function App() {
                                 key={movie.id}
                                 focused={section === 'thriller' && thrillerIdx === i}
                                 title={movie.title}
-                                sublabel={movie.sub}
+                                sublabel={`${movie.kind} · ${movie.year}`}
+                                provider={movie.provider}
                                 img={movie.img}
                                 style={cardFocusStyle}
                                 isWireframeMode={isWireframeMode}
@@ -1803,7 +1882,8 @@ export default function App() {
                                 key={movie.id}
                                 focused={section === 'drama' && dramaIdx === i}
                                 title={movie.title}
-                                sublabel={movie.sub}
+                                sublabel={`${movie.kind} · ${movie.year}`}
+                                provider={movie.provider}
                                 img={movie.img}
                                 style={cardFocusStyle}
                                 isWireframeMode={isWireframeMode}
@@ -2235,7 +2315,7 @@ export default function App() {
                 <Power size={36} className="text-red-500/80 group-hover:text-white transition-colors" strokeWidth={2.5} />
               </div>
               <span className="text-red-500/40 font-bold tracking-[0.2em] uppercase text-[10px] group-hover:text-red-400/60 transition-colors">
-                CLICK TO POWER ON
+                OK 버튼으로 켜기
               </span>
             </motion.div>
           </motion.div>

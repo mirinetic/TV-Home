@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { providerIcon } from '../constants';
 
 interface ContentCardProps {
   focused: boolean;
@@ -11,6 +12,10 @@ interface ContentCardProps {
   onClick?: () => void;
   style?: number;
   isWireframeMode?: boolean;
+  /** Service name ("Netflix", "Prime Video" ...): its app icon shows in the focus text. */
+  provider?: string;
+  /** Rank number drawn left of the card (TOP 10 rows). */
+  rank?: number;
 }
 
 export const ContentCard = ({ 
@@ -22,13 +27,23 @@ export const ContentCard = ({
   onMouseEnter,
   onClick,
   style = 0,
-  isWireframeMode = false
-}: ContentCardProps) => (
+  isWireframeMode = false,
+  provider,
+  rank
+}: ContentCardProps) => {
+  const icon = provider ? providerIcon(provider) : undefined;
+  return (
   <div 
-    className="flex flex-col gap-6 shrink-0 relative"
+    className="flex shrink-0 relative items-start"
     onMouseEnter={onMouseEnter}
     onClick={onClick}
   >
+    {rank !== undefined && (
+      <span className={`w-[140px] shrink-0 text-right pr-4 text-[190px] leading-[248px] font-light tracking-tighter tabular-nums ${isWireframeMode ? 'text-cyan-500/40 font-mono' : 'text-white/85'}`}>
+        {rank}
+      </span>
+    )}
+    <div className="flex flex-col gap-6">
     <motion.div 
       animate={{ 
         scale: focused ? (style === 0 ? 1.1 : 1.05) : 1,
@@ -103,7 +118,7 @@ export const ContentCard = ({
       )}
     </motion.div>
     
-    {/* STYLE 0: Metadata OUTSIDE the card */}
+    {/* STYLE 0: one line under the focused card: service icon · title | kind */}
     {style === 0 && (
       <div className="h-24 flex flex-col justify-start">
         <AnimatePresence>
@@ -113,20 +128,27 @@ export const ContentCard = ({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="flex flex-col gap-1 items-start"
+              className={`flex items-center gap-4 ${width} pr-2`}
             >
-              <h4 className={`text-[32px] font-bold tracking-tight leading-tight ${isWireframeMode ? 'text-cyan-400 animate-pulse font-mono text-[20px]' : 'text-white'}`}>
-                {isWireframeMode ? `[ TITLE: ${title} ]` : title}
-              </h4>
               {isWireframeMode ? (
-                <div className="h-4 bg-cyan-950/40 border border-cyan-500/20 rounded w-[130px] mt-1.5 animate-pulse" />
+                <>
+                  <div className="w-11 h-11 rounded-lg border border-cyan-500/30 bg-cyan-950/40 shrink-0" />
+                  <h4 className="text-[20px] font-mono text-cyan-400 animate-pulse truncate">[ TITLE: {title} ]</h4>
+                </>
               ) : (
-                <p className="text-xl font-medium tracking-tight text-white/40">{sublabel}</p>
+                <>
+                  {icon && <img src={icon} alt={provider} className="w-11 h-11 rounded-lg object-cover shrink-0" />}
+                  <h4 className="text-[26px] font-semibold tracking-tight leading-tight text-white truncate">{title}</h4>
+                  {sublabel && <span className="w-px h-6 bg-white/30 shrink-0" />}
+                  {sublabel && <span className="text-[22px] font-medium tracking-tight text-white/55 whitespace-nowrap">{sublabel}</span>}
+                </>
               )}
             </motion.div>
           )}
         </AnimatePresence>
       </div>
     )}
+    </div>
   </div>
-);
+  );
+};
