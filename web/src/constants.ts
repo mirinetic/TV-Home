@@ -27,18 +27,18 @@ import {
 import * as CustomIcons from './components/Icons';
 
 export const RECOMMENDATIONS = [
-  { id: 1, title: "FALLOUT", sub: "AMAZON ORIGINAL", img: "/assets/contents/fallout.webp" },
-  { id: 2, title: "THE LAST OF US", sub: "HBO MAX", img: "/assets/contents/2by3_1.webp" },
-  { id: 3, title: "CYBERPUNK", sub: "NETFLIX", img: "/assets/contents/2by3_2.webp" },
-  { id: 4, title: "오징어 게임", sub: "NETFLIX", img: "/assets/contents/cb_thumb_07_01.webp" },
-  { id: 5, title: "Stranger Things", sub: "NETFLIX", img: "/assets/contents/cb_thumb_07_02.webp" },
-  { id: 6, title: "The Crown", sub: "NETFLIX", img: "/assets/contents/cb_thumb_07_03.webp" },
-  { id: 7, title: "Top Picks", sub: "TV PLUS", img: "/assets/contents/cb_thumb_09_01.webp" },
-  { id: 8, title: "New Releases", sub: "PREMIUM", img: "/assets/contents/cb_thumb_09_02.webp" },
-  { id: 9, title: "Live Sports", sub: "TV PLUS", img: "/assets/contents/cb_thumb_03_01.webp" },
-  { id: 10, title: "Global News", sub: "TV PLUS", img: "/assets/contents/cb_thumb_03_02.webp" },
-  { id: 11, title: "Cooking Class", sub: "LIFESTYLE", img: "/assets/contents/cb_thumb_03_03.webp" },
-  { id: 12, title: "Nature Doc", sub: "WILDLIFE", img: "/assets/contents/cb_thumb_03_04.webp" },
+  { id: 1, title: "Fallout", sub: "PRIME VIDEO · SF 시리즈", img: "/assets/contents/fallout.webp" },
+  { id: 2, title: "One Shot: Overtime Elite", sub: "PRIME VIDEO · 스포츠 다큐", img: "/assets/contents/2by3_1_wide.webp" },
+  { id: 3, title: "Lost in Space", sub: "NETFLIX · SF 시리즈", img: "/assets/contents/cb_thumb_07_01.webp" },
+  { id: 4, title: "Lucifer", sub: "NETFLIX · 판타지 범죄 시리즈", img: "/assets/contents/cb_thumb_07_02.webp" },
+  { id: 5, title: "Narcos: Mexico", sub: "NETFLIX · 범죄 시리즈", img: "/assets/contents/cb_thumb_09_02.webp" },
+  { id: 6, title: "Band of Brothers", sub: "HBO · 전쟁 드라마", img: "/assets/contents/cb_thumb_09_01.webp" },
+  { id: 7, title: "Triple Frontier", sub: "NETFLIX · 액션 영화", img: "/assets/contents/cb_thumb_03_01.webp" },
+  { id: 8, title: "Carmen Sandiego", sub: "NETFLIX · 애니메이션 시리즈", img: "/assets/contents/cb_thumb_07_03.webp" },
+  { id: 9, title: "Altered Carbon", sub: "NETFLIX · SF 시리즈", img: "/assets/contents/cb_thumb_07_05.webp" },
+  { id: 10, title: "The Ride", sub: "PRIME VIDEO · 다큐 시리즈", img: "/assets/contents/2by3_2_wide.webp" },
+  { id: 11, title: "The Defenders", sub: "NETFLIX · 액션 시리즈", img: "/assets/contents/cb_thumb_03_02.webp" },
+  { id: 12, title: "Rim of the World", sub: "NETFLIX · SF 모험 영화", img: "/assets/contents/cb_thumb_09_03.webp" },
 ];
 
 export const APPS = [
@@ -57,75 +57,48 @@ export const APPS = [
 ];
 
 export const COMEDY_MOVIES = [
-  { id: 101, title: "Trending Now", sub: "RECOMMENDED", img: "/assets/contents/cb_thumb_07_04.webp" },
-  { id: 106, title: "Popular Series", sub: "TOP 10", img: "/assets/contents/cb_thumb_07_05.webp" },
-  { id: 102, title: "Original Hits", sub: "NETFLIX", img: "/assets/contents/cb_thumb_07_01.webp" },
-  { id: 103, title: "New Episodes", sub: "RECENTLY ADDED", img: "/assets/contents/cb_thumb_09_03.webp" },
-  { id: 104, title: "Weekly Focus", sub: "CURATED", img: "/assets/contents/cb_thumb_09_04.webp" },
-  { id: 105, title: "Best Sellers", sub: "PREMIUM", img: "/assets/contents/cb_thumb_09_05.webp" },
-  { id: 107, title: "Quick Watch", sub: "SHORTS", img: "/assets/contents/short_1.jpg" },
-  { id: 108, title: "Daily News", sub: "LIVE", img: "/assets/contents/cb_thumb_03_05.webp" },
-  { id: 109, title: "Must Watch", sub: "AWARD WINNING", img: "/assets/contents/cb_thumb_09_01.webp" },
+  { id: 101, title: "The Incredible Jessica James", sub: "NETFLIX · 코미디 영화", img: "/assets/contents/cb_thumb_09_04.webp" },
+  { id: 102, title: "Trinkets", sub: "NETFLIX · 청춘 드라마 시리즈", img: "/assets/contents/cb_thumb_09_05.webp" },
+  { id: 103, title: "Carmen Sandiego", sub: "NETFLIX · 애니메이션 시리즈", img: "/assets/contents/cb_thumb_07_03.webp" },
+  { id: 104, title: "Rim of the World", sub: "NETFLIX · SF 모험 영화", img: "/assets/contents/cb_thumb_09_03.webp" },
+  { id: 105, title: "Marlon Wayans: Good Grief · 클립", sub: "PRIME VIDEO · 코미디 스페셜", img: "/assets/contents/short_4.jpg" },
 ];
 
 export const ROMANCE_MOVIES = [
-  { id: 201, title: "Short Form", sub: "TRENDING", img: "/assets/contents/short_2.jpg" },
-  { id: 209, title: "Urban Life", sub: "DOCUMENTARY", img: "/assets/contents/short_3.jpg" },
-  { id: 202, title: "Street Style", sub: "FASHION", img: "/assets/contents/short_4.jpg" },
-  { id: 203, title: "Binge Watch", sub: "FULL SEASON", img: "/assets/contents/cb_thumb_07_02.webp" },
-  { id: 204, title: "Critics Choice", sub: "TOP RATED", img: "/assets/contents/cb_thumb_07_03.webp" },
-  { id: 205, title: "Fan Favorites", sub: "COMMUNITY", img: "/assets/contents/cb_thumb_07_04.webp" },
-  { id: 206, title: "Hidden Gems", sub: "INDIE", img: "/assets/contents/cb_thumb_09_02.webp" },
-  { id: 207, title: "Just Added", sub: "NEW", img: "/assets/contents/cb_thumb_09_03.webp" },
-  { id: 208, title: "Classic Tales", sub: "TIMELESS", img: "/assets/contents/cb_thumb_09_04.webp" },
+  { id: 201, title: "The Idea of You · 출연진 소개", sub: "PRIME VIDEO · 클립", img: "/assets/contents/short_2.jpg" },
+  { id: 202, title: "The Idea of You · 배우 인터뷰", sub: "ODE ENTERTAINMENT · 클립", img: "/assets/contents/short_1.jpg" },
+  { id: 203, title: "Federer: Twelve Final Days · 예고편", sub: "PRIME VIDEO · 다큐 예고편", img: "/assets/contents/short_3.jpg" },
+  { id: 204, title: "Marlon Wayans: Good Grief · 클립", sub: "PRIME VIDEO · 코미디 스페셜", img: "/assets/contents/short_4.jpg" },
 ];
 
 export const DOC_MOVIES = [
-  { id: 301, title: "Wildlife", sub: "NATIONAL GEOGRAPHIC", img: "/assets/contents/cb_thumb_03_04.webp" },
-  { id: 306, title: "World News", sub: "GLOBAL", img: "/assets/contents/cb_thumb_03_02.webp" },
-  { id: 302, title: "Space Odyssey", sub: "SCIENCE", img: "/assets/contents/2by3_1.webp" },
-  { id: 303, title: "Art Gallery", sub: "EXHIBITION", img: "/assets/contents/cb_thumb_09_05.webp" },
-  { id: 304, title: "Sports Live", sub: "TV PLUS", img: "/assets/contents/cb_thumb_03_01.webp" },
-  { id: 305, title: "Cooking", sub: "FOOD NETWORK", img: "/assets/contents/cb_thumb_03_03.webp" },
-  { id: 307, title: "Travel", sub: "WANDERLUST", img: "/assets/contents/cb_thumb_03_05.webp" },
-  { id: 308, title: "History", sub: "PAST & PRESENT", img: "/assets/contents/cb_thumb_07_05.webp" },
-  { id: 309, title: "Oceans", sub: "DEEP BLUE", img: "/assets/contents/cb_thumb_09_01.webp" },
+  { id: 301, title: "Federer: Twelve Final Days · 예고편", sub: "PRIME VIDEO · 다큐 예고편", img: "/assets/contents/short_3.jpg" },
+  { id: 302, title: "One Shot: Overtime Elite", sub: "PRIME VIDEO · 스포츠 다큐", img: "/assets/contents/2by3_1_wide.webp" },
+  { id: 303, title: "The Ride", sub: "PRIME VIDEO · 다큐 시리즈", img: "/assets/contents/2by3_2_wide.webp" },
 ];
 
 export const ACTION_MOVIES = [
-  { id: 401, title: "FALLOUT", sub: "ACTION SERIES", img: "/assets/contents/fallout.webp" },
-  { id: 402, title: "THE LAST OF US", sub: "SURVIVAL", img: "/assets/contents/2by3_1.webp" },
-  { id: 403, title: "CYBERPUNK", sub: "NEON ACTION", img: "/assets/contents/2by3_2.webp" },
-  { id: 404, title: "Action Hits", sub: "THRILLING", img: "/assets/contents/cb_thumb_07_01.webp" },
-  { id: 405, title: "War Zone", sub: "HISTORICAL", img: "/assets/contents/cb_thumb_07_02.webp" },
-  { id: 406, title: "Underground", sub: "CRIME", img: "/assets/contents/cb_thumb_07_03.webp" },
-  { id: 407, title: "Combat", sub: "MARTIAL ARTS", img: "/assets/contents/cb_thumb_07_04.webp" },
-  { id: 408, title: "High Speed", sub: "RACING", img: "/assets/contents/cb_thumb_09_02.webp" },
-  { id: 409, title: "Shadows", sub: "SPY", img: "/assets/contents/cb_thumb_09_03.webp" },
+  { id: 401, title: "Triple Frontier", sub: "NETFLIX · 액션 영화", img: "/assets/contents/cb_thumb_03_01.webp" },
+  { id: 402, title: "Maria", sub: "NETFLIX · 액션 영화", img: "/assets/contents/cb_thumb_03_04.webp" },
+  { id: 403, title: "Close", sub: "NETFLIX · 액션 스릴러 영화", img: "/assets/contents/cb_thumb_03_05.webp" },
+  { id: 404, title: "The Defenders", sub: "NETFLIX · 액션 시리즈", img: "/assets/contents/cb_thumb_03_02.webp" },
+  { id: 405, title: "Fallout", sub: "PRIME VIDEO · SF 시리즈", img: "/assets/contents/fallout.webp" },
 ];
 
 export const THRILLER_MOVIES = [
-  { id: 501, title: "Mystery Night", sub: "SUSPENSE", img: "/assets/contents/cb_thumb_09_04.webp" },
-  { id: 502, title: "The Dark", sub: "HORROR", img: "/assets/contents/cb_thumb_09_05.webp" },
-  { id: 503, title: "Deep Sea", sub: "THRILLER", img: "/assets/contents/cb_thumb_03_04.webp" },
-  { id: 504, title: "Cyber Crime", sub: "TECH THRILLER", img: "/assets/contents/2by3_2.webp" },
-  { id: 505, title: "Stalker", sub: "PSYCHOLOGICAL", img: "/assets/contents/cb_thumb_07_05.webp" },
-  { id: 506, title: "Missing", sub: "MYSTERY", img: "/assets/contents/cb_thumb_07_01.webp" },
-  { id: 507, title: "Evidence", sub: "CRIME", img: "/assets/contents/cb_thumb_07_02.webp" },
-  { id: 508, title: "Haunted", sub: "SUPERNATURAL", img: "/assets/contents/cb_thumb_07_03.webp" },
-  { id: 509, title: "Secret", sub: "HIDDEN", img: "/assets/contents/cb_thumb_07_04.webp" },
+  { id: 501, title: "Narcos: Mexico", sub: "NETFLIX · 범죄 시리즈", img: "/assets/contents/cb_thumb_09_02.webp" },
+  { id: 502, title: "Bad Blood", sub: "NETFLIX · 범죄 시리즈", img: "/assets/contents/cb_thumb_07_04.webp" },
+  { id: 503, title: "Close", sub: "NETFLIX · 액션 스릴러 영화", img: "/assets/contents/cb_thumb_03_05.webp" },
+  { id: 504, title: "Lucifer", sub: "NETFLIX · 판타지 범죄 시리즈", img: "/assets/contents/cb_thumb_07_02.webp" },
 ];
 
 export const DRAMA_MOVIES = [
-  { id: 601, title: "Life Story", sub: "INSPIRATIONAL", img: "/assets/contents/cb_thumb_09_01.webp" },
-  { id: 602, title: "Family Ties", sub: "EMOTIONAL", img: "/assets/contents/cb_thumb_09_02.webp" },
-  { id: 603, title: "The Journey", sub: "DRAMA", img: "/assets/contents/cb_thumb_09_03.webp" },
-  { id: 604, title: "True Events", sub: "HISTORICAL", img: "/assets/contents/cb_thumb_07_05.webp" },
-  { id: 605, title: "Heartfelt", sub: "ROMANTIC DRAMA", img: "/assets/contents/short_2.jpg" },
-  { id: 606, title: "Modern Life", sub: "SOCIAL", img: "/assets/contents/short_3.jpg" },
-  { id: 607, title: "Vintage", sub: "CLASSIC", img: "/assets/contents/cb_thumb_03_05.webp" },
-  { id: 608, title: "Growth", sub: "COMING OF AGE", img: "/assets/contents/cb_thumb_03_03.webp" },
-  { id: 609, title: "Peace", sub: "CALM", img: "/assets/contents/cb_thumb_03_04.webp" },
+  { id: 601, title: "Band of Brothers", sub: "HBO · 전쟁 드라마", img: "/assets/contents/cb_thumb_09_01.webp" },
+  { id: 602, title: "Lost in Space", sub: "NETFLIX · SF 시리즈", img: "/assets/contents/cb_thumb_07_01.webp" },
+  { id: 603, title: "Altered Carbon", sub: "NETFLIX · SF 시리즈", img: "/assets/contents/cb_thumb_07_05.webp" },
+  { id: 604, title: "Van Helsing", sub: "NETFLIX · 판타지 호러 시리즈", img: "/assets/contents/cb_thumb_03_03.webp" },
+  { id: 605, title: "Trinkets", sub: "NETFLIX · 청춘 드라마 시리즈", img: "/assets/contents/cb_thumb_09_05.webp" },
+  { id: 606, title: "Bad Blood", sub: "NETFLIX · 범죄 시리즈", img: "/assets/contents/cb_thumb_07_04.webp" },
 ];
 
 export const SETTINGS_OPTIONS = [

@@ -148,9 +148,9 @@ export const VAC_SCENARIOS: Record<string, ScenarioData> = {
       '"유튜브에서 관련 비하인드 영상 검색해줘"'
     ],
     relatedCards: [
-      { title: '우주 SF 명작 컬렉션', sub: '추천 테마', img: '/assets/contents/2by3_1.webp', type: 'L' },
-      { title: '사라진 탐사선 비하인드', sub: 'YouTube', img: '/assets/contents/cb_thumb_07_01.webp', type: 'L' },
-      { title: '비슷한 영화 보기', sub: 'SF 컬렉션', img: '/assets/contents/cb_thumb_07_02.webp', type: 'L' }
+      { title: 'Altered Carbon', sub: 'NETFLIX · 비슷한 SF 시리즈', img: '/assets/contents/cb_thumb_07_05.webp', type: 'L' },
+      { title: 'Lost in Space', sub: 'NETFLIX · 우주 탐사 SF 시리즈', img: '/assets/contents/cb_thumb_07_01.webp', type: 'L' },
+      { title: 'Rim of the World', sub: 'NETFLIX · 비슷한 SF 영화', img: '/assets/contents/cb_thumb_09_03.webp', type: 'L' }
     ]
   },
   topic: {
@@ -168,8 +168,8 @@ export const VAC_SCENARIOS: Record<string, ScenarioData> = {
       '"바다 다큐멘터리 다른 에피소드 보여줘"'
     ],
     relatedCards: [
-      { title: '미지의 해양 세계', sub: '다큐멘터리', img: '/assets/contents/cb_thumb_03_04.webp', type: 'L' },
-      { title: '해저 도시 가상체험', sub: 'TV PLUS', img: '/assets/contents/cb_thumb_03_03.webp', type: 'L' }
+      { title: '미지의 해양 세계', sub: '다큐멘터리', img: '/assets/contents/topic_ocean.webp', type: 'L' },
+      { title: '해저 도시 가상체험', sub: 'TV PLUS', img: '/assets/contents/topic_ocean.webp', type: 'L' }
     ]
   },
   copilot: {
@@ -185,7 +185,7 @@ export const VAC_SCENARIOS: Record<string, ScenarioData> = {
       '"TV에서 코파일럿 모드 실행해줘"'
     ],
     relatedCards: [
-      { title: '생산성 향상 가이드', sub: 'MS Copilot', img: '/assets/contents/cb_thumb_09_02.webp', type: 'L' }
+      { title: '생산성 향상 가이드', sub: 'MS Copilot', img: '/assets/contents/topic_assistant.webp', type: 'L' }
     ]
   },
   perplexity: {
@@ -201,7 +201,7 @@ export const VAC_SCENARIOS: Record<string, ScenarioData> = {
       '"양자컴퓨터 관련 뉴스 재생해줘"'
     ],
     relatedCards: [
-      { title: '양자컴퓨터 입문 강좌', sub: 'TECH TV', img: '/assets/contents/cb_thumb_09_05.webp', type: 'L' }
+      { title: '양자컴퓨터 입문 강좌', sub: 'TECH TV', img: '/assets/contents/topic_tech.webp', type: 'L' }
     ]
   }
 };

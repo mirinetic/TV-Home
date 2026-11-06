@@ -1511,7 +1511,7 @@ export default function App() {
                       <section id="section-comedy" className="overflow-visible relative h-[480px]">
                         <div className="h-14 mb-2">
                           <span className="text-[22px] font-semibold tracking-tight text-white px-2">
-                            코미디
+                            코미디 · 청춘
                           </span>
                         </div>
 
@@ -1564,7 +1564,7 @@ export default function App() {
                       <section id="section-romance" className="overflow-visible relative h-[480px] -mt-10">
                         <div className="h-14 mb-2">
                           <span className="text-[22px] font-semibold tracking-tight text-white px-2">
-                            로맨스
+                            예고편 · 클립
                           </span>
                         </div>
 
@@ -1723,7 +1723,7 @@ export default function App() {
                       <section id="section-thriller" className="overflow-visible relative h-[480px] -mt-10">
                         <div className="h-14 mb-2">
                           <span className="text-[22px] font-semibold tracking-tight text-white px-2">
-                            스릴러
+                            범죄 · 스릴러
                           </span>
                         </div>
 
@@ -1776,7 +1776,7 @@ export default function App() {
                       <section id="section-drama" className="overflow-visible relative h-[480px] -mt-10">
                         <div className="h-14 mb-2">
                           <span className="text-[22px] font-semibold tracking-tight text-white px-2">
-                            드라마
+                            인기 시리즈
                           </span>
                         </div>
 
