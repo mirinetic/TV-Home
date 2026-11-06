@@ -147,36 +147,43 @@ export const QUICK_SETTINGS = [
   { id: 'picture', name: '화면 모드', icon: Image, type: 'round' },
 ];
 
+// Hero banners: key art from the content library (provider wordmark + Watch button on the left, like the TV).
 export const HERO_BANNERS = [
-  { 
-    id: 1, 
-    title: "VOID RUNNER", 
-    desc: "올해 가장 기대되는 SF 스릴러. 우주의 신비를 경험하세요.", 
-    bg: "https://images.unsplash.com/photo-1543722530-d2c3201371e7?q=80&w=2074&auto=format&fit=crop",
-    accent: "rgba(59, 130, 246, 0.4)",
-    meta: "2024 · 2h 15m · SF/Action · 15+",
-    cast: "David Kim, Sarah Jenkins, Mark Ross",
-    rating: "9.8"
+  {
+    id: 1,
+    title: "Fallout",
+    provider: "Prime Video",
+    desc: "핵전쟁 200년 뒤, 지하 볼트에서 자란 루시가 처음으로 황무지에 나서며 벌어지는 이야기.",
+    bg: "/assets/contents/fallout.webp",
+    accent: "rgba(234, 179, 8, 0.35)",
+    meta: "2024 · SF 시리즈 · Prime Video",
+    credit: "제작: Jonathan Nolan, Lisa Joy",
+    cast: "Ella Purnell, Aaron Moten, Walton Goggins",
+    rating: "PRIME ORIGINAL"
   },
-  { 
-    id: 2, 
-    title: "CYBER CITY", 
-    desc: "잠들지 않는 도시, 네온 사인 아래 숨겨진 진실을 파헤치세요.", 
-    bg: "https://images.unsplash.com/photo-1605806616949-1e87b487fc2f?q=80&w=2070&auto=format&fit=crop",
-    accent: "rgba(139, 92, 246, 0.4)",
-    meta: "2023 · 1h 48m · Cyberpunk · 18+",
-    cast: "Lena Park, Thomas Miller",
-    rating: "8.5"
+  {
+    id: 2,
+    title: "The Idea of You",
+    provider: "Prime Video",
+    desc: "40세 싱글맘 솔렌과 보이밴드 멤버 헤이스의 예상 밖 로맨스.",
+    bg: "/assets/contents/short_2.jpg",
+    accent: "rgba(244, 114, 182, 0.35)",
+    meta: "2024 · 로맨스 영화 · Prime Video",
+    credit: "감독: Michael Showalter",
+    cast: "Anne Hathaway, Nicholas Galitzine",
+    rating: "PRIME ORIGINAL"
   },
-  { 
-    id: 3, 
-    title: "NEON RIDERS", 
-    desc: "최고의 속도감, 리얼리티 액션. 신개념 레이싱의 시작.", 
-    bg: "https://images.unsplash.com/photo-1511447333015-45b65e60f6d5?q=80&w=2023&auto=format&fit=crop",
-    accent: "rgba(239, 68, 68, 0.4)",
-    meta: "2024 · 2h 05m · Racing · ALL",
-    cast: "Chris Evans, Ana de Armas",
-    rating: "9.2"
+  {
+    id: 3,
+    title: "Federer: Twelve Final Days",
+    provider: "Prime Video",
+    desc: "로저 페더러가 은퇴를 발표하고 마지막 경기를 치르기까지의 12일을 담은 다큐멘터리.",
+    bg: "/assets/contents/short_3.jpg",
+    accent: "rgba(56, 189, 248, 0.35)",
+    meta: "2025 · 다큐멘터리 · Prime Video",
+    credit: "감독: Asif Kapadia, Joe Sabia",
+    cast: "Roger Federer",
+    rating: "PRIME ORIGINAL"
   },
 ];
 

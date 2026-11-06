@@ -33,6 +33,7 @@ import {
   GNB_LABELS,
   HERO_BANNERS,
   Content,
+  providerIcon,
   SECTIONS
 } from './constants';
 import {
@@ -1335,14 +1336,14 @@ export default function App() {
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 1 }}
                                 src={HERO_BANNERS[heroIdx].bg}
-                                alt="Hero Banner"
-                                referrerPolicy="no-referrer"
-                                className="w-full h-full object-cover opacity-100"
+                                alt={HERO_BANNERS[heroIdx].title}
+                                className="absolute right-0 top-0 h-full w-[1240px] object-cover object-right"
                               />
                             </AnimatePresence>
-                            <div className="absolute inset-x-0 bottom-0 h-[350px] bg-gradient-to-t from-black via-black/80 to-transparent z-10" />
-                            <div className="absolute inset-x-0 bottom-0 h-10 bg-black z-10" />
-                            <div className="absolute inset-y-0 left-0 w-[800px] bg-gradient-to-r from-black/95 via-black/40 to-transparent z-10" />
+                            <div className="absolute inset-y-0 left-[620px] w-[420px] bg-gradient-to-r from-black to-transparent z-10" />
+                            <div className="absolute inset-y-0 left-0 w-[680px] bg-black z-10" />
+                            <div className="absolute inset-x-0 top-0 h-[180px] bg-gradient-to-b from-black/80 to-transparent z-10" />
+                            <div className="absolute inset-x-0 bottom-0 h-[200px] bg-gradient-to-t from-black via-black/70 to-transparent z-10" />
                             <motion.div
                               animate={{ backgroundColor: HERO_BANNERS[heroIdx].accent }}
                               transition={{ duration: 1 }}
@@ -1353,33 +1354,29 @@ export default function App() {
                       </div>
 
                       <div className="relative z-10 w-full flex flex-col items-start gap-6">
-                        <div className="flex flex-col items-center w-fit gap-6">
+                        <div className="flex flex-col items-start w-fit gap-10">
                           <motion.div
                             key={heroIdx}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="flex flex-col items-center gap-2"
+                            className="flex items-center gap-4 h-20"
                           >
                             {isWireframeMode ? (
-                              <h1 className="text-3xl font-bold tracking-widest uppercase text-cyan-400 font-mono py-2">
-                                [ AD_TITLE: {HERO_BANNERS[heroIdx].title} ]
+                              <h1 className="text-2xl font-bold tracking-widest uppercase text-cyan-400 font-mono py-2">
+                                [ PROVIDER: {HERO_BANNERS[heroIdx].provider} ]
                               </h1>
                             ) : (
-                              <h1 className="text-[72px] font-black italic uppercase tracking-tighter leading-[0.85] text-white drop-shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
-                                {HERO_BANNERS[heroIdx].title}
-                              </h1>
-                            )}
-                            {isWireframeMode ? (
-                              <p className="text-lg font-mono text-cyan-500/70 max-w-xl text-center leading-relaxed tracking-tight">
-                                [ AD_DESC: {HERO_BANNERS[heroIdx].desc} ]
-                              </p>
-                            ) : (
-                              <p className="text-xl font-medium max-w-xl leading-snug tracking-tight text-center text-white/70">
-                                {HERO_BANNERS[heroIdx].desc}
-                              </p>
+                              <>
+                                {providerIcon(HERO_BANNERS[heroIdx].provider) && (
+                                  <img src={providerIcon(HERO_BANNERS[heroIdx].provider)} alt="" className="w-16 h-16 rounded-2xl object-cover" />
+                                )}
+                                <span className="text-[44px] font-bold tracking-tight text-white drop-shadow-[0_6px_20px_rgba(0,0,0,0.6)]">
+                                  {HERO_BANNERS[heroIdx].provider}
+                                </span>
+                              </>
                             )}
                           </motion.div>
-                          <div className="flex flex-col items-center gap-6">
+                          <div className="flex flex-col items-start gap-8">
                             <motion.div
                               onMouseEnter={() => {
                                 if (interactionMode === 1 && isCursorVisible) {
@@ -1396,7 +1393,7 @@ export default function App() {
                               animate={{
                                 scale: section === 'hero' ? 1.05 : 1
                               }}
-                              className={`px-20 py-5 rounded-[2.5rem] font-bold uppercase text-lg tracking-tight border-2 transition-all duration-300 cursor-pointer ${
+                              className={`px-24 py-5 rounded-[2.5rem] font-semibold text-[26px] tracking-tight border-2 transition-all duration-300 cursor-pointer ${
                                 isWireframeMode
                                   ? (section === 'hero'
                                       ? 'bg-cyan-500 text-black border-cyan-500 shadow-[0_0_30px_rgba(6,182,212,0.4)]'
@@ -1406,7 +1403,7 @@ export default function App() {
                                       : 'bg-white/5 text-white border-white/10 backdrop-blur-3xl hover:bg-white/10')
                               }`}
                             >
-                              지금 시청하기
+                              Watch Now
                             </motion.div>
 
                             <div className="flex justify-center gap-2.5 px-3 items-center">

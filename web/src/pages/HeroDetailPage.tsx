@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { Star, Play, Plus } from 'lucide-react';
+import { Play, Plus } from 'lucide-react';
+import { launchApp } from '../native';
 
 interface HeroDetailPageProps {
   banner: any;
@@ -26,11 +27,12 @@ const HeroDetailPage = ({ banner, onBack, isWireframeMode = false }: HeroDetailP
         setLocalIdx(prev => (prev > 0 ? prev - 1 : prev));
       } else if (e.key === 'Enter') {
         if (localIdx === 2) onBack();
+        else if (localIdx === 0 && banner.provider) launchApp(banner.provider);   // opens the service's TV app
       }
     };
     window.addEventListener('keydown', handlePopState);
     return () => window.removeEventListener('keydown', handlePopState);
-  }, [onBack, localIdx]);
+  }, [onBack, localIdx, banner]);
 
   return (
     <motion.div 
@@ -68,13 +70,13 @@ const HeroDetailPage = ({ banner, onBack, isWireframeMode = false }: HeroDetailP
       </div>
 
       <main className="relative h-full flex items-center px-20 z-10">
-        <div className="grid grid-cols-2 gap-20 w-full max-w-7xl mx-auto">
+        <div className="flex items-center gap-20 w-full max-w-[1680px] mx-auto">
           {/* Poster area */}
           <motion.div 
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className={`aspect-[2/3] w-[440px] rounded-3xl overflow-hidden border group relative ${
+            className={`aspect-[16/9] w-[720px] shrink-0 rounded-3xl overflow-hidden border group relative ${
               isWireframeMode 
                 ? 'border-cyan-500/40 shadow-[0_0_30px_rgba(6,182,212,0.2)]' 
                 : 'shadow-[0_50px_100px_rgba(0,0,0,0.8)] border-white/10'
@@ -106,17 +108,14 @@ const HeroDetailPage = ({ banner, onBack, isWireframeMode = false }: HeroDetailP
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
-            className="flex flex-col justify-center gap-10"
+            className="flex flex-col justify-center gap-10 min-w-0 flex-1"
           >
             <div className="space-y-6">
               <div className="flex items-center gap-4">
-                <span className={`px-3 py-1 text-xs font-black rounded-md tracking-tighter ${isWireframeMode ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' : 'bg-[#22c55e] text-black'}`}>PREMIUM</span>
-                <div className={`flex items-center gap-1.5 ${isWireframeMode ? 'text-cyan-400' : 'text-yellow-400'}`}>
-                  <Star size={16} fill="currentColor" />
-                  <span className="font-bold tracking-tight">{banner.rating}</span>
-                </div>
+                <span className={`px-3 py-1 text-xs font-black rounded-md tracking-tighter ${isWireframeMode ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' : 'bg-[#22c55e] text-black'}`}>{banner.provider}</span>
+                <span className={`font-bold tracking-tight ${isWireframeMode ? 'text-cyan-400' : 'text-white/60'}`}>{banner.rating}</span>
               </div>
-              <h1 className={`text-[100px] font-black italic tracking-tighter leading-none uppercase ${isWireframeMode ? 'text-cyan-400' : 'text-white'}`}>
+              <h1 className={`text-[88px] font-black tracking-tighter leading-none ${isWireframeMode ? 'text-cyan-400' : 'text-white'}`}>
                 {banner.title}
               </h1>
               <p className={`font-mono tracking-widest text-lg uppercase ${isWireframeMode ? 'text-cyan-500/80' : 'text-white/40'}`}>
@@ -127,7 +126,7 @@ const HeroDetailPage = ({ banner, onBack, isWireframeMode = false }: HeroDetailP
             <p className={`text-2xl leading-relaxed max-w-xl font-medium tracking-tight ${isWireframeMode ? 'text-cyan-500/85' : 'text-white/70'}`}>
               {banner.desc}
               <br />
-              <span className={`text-lg mt-4 block ${isWireframeMode ? 'text-cyan-600' : 'text-white/40'}`}>감독: Denis Villeneuve · 출연: {banner.cast}</span>
+              <span className={`text-lg mt-4 block ${isWireframeMode ? 'text-cyan-600' : 'text-white/40'}`}>{banner.credit} · 출연: {banner.cast}</span>
             </p>
 
             <div className="flex gap-4 pt-4">
