@@ -2,9 +2,13 @@ package com.mirinetic.tvhome
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
@@ -13,6 +17,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import org.json.JSONObject
 import java.io.IOException
 
 /**
@@ -23,10 +28,20 @@ import java.io.IOException
 class MainActivity : Activity() {
 
     private lateinit var web: WebView
+    lateinit var updater: Updater
+        private set
+
+    private val installReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) = updater.onStatus(intent)
+    }
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        updater = Updater(this)
+        val filter = IntentFilter(Updater.ACTION_STATUS)
+        if (Build.VERSION.SDK_INT >= 33) registerReceiver(installReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
+        else registerReceiver(installReceiver, filter)
         web = WebView(this).apply {
             setBackgroundColor(Color.BLACK)
             settings.javaScriptEnabled = true
@@ -109,6 +124,15 @@ class MainActivity : Activity() {
         return super.dispatchKeyEvent(event)
     }
 
+    /** Fires a window CustomEvent in the page with a JSON detail. Safe from any thread. */
+    fun event(name: String, json: String) {
+        runOnUiThread {
+            if (::web.isInitialized) web.evaluateJavascript(
+                "window.dispatchEvent(new CustomEvent(${JSONObject.quote(name)},{detail:JSON.parse(${JSONObject.quote(json)})}))", null
+            )
+        }
+    }
+
     private fun key(name: String) {
         val code = if (name == "Escape") 27 else 113
         web.evaluateJavascript(
@@ -128,6 +152,10 @@ class MainActivity : Activity() {
     }
 
     override fun onDestroy() {
+        try {
+            unregisterReceiver(installReceiver)
+        } catch (_: IllegalArgumentException) {
+        }
         web.destroy()
         super.onDestroy()
     }
@@ -161,6 +189,17 @@ class MainActivity : Activity() {
         /** True when a TV app for this tile name is installed. */
         @JavascriptInterface
         fun hasApp(name: String): Boolean = Apps.find(this@MainActivity, name) != null
+
+        /** Answers with a 'tvhome-update' event of type "result". */
+        @JavascriptInterface
+        fun checkUpdate() = updater.check()
+
+        /** Downloads and installs the latest build; reports 'tvhome-update' events of type "progress". */
+        @JavascriptInterface
+        fun installUpdate() = updater.install()
+
+        @JavascriptInterface
+        fun versionName(): String = BuildConfig.VERSION_NAME
 
         /** Leaves TV Home (back to the TV's own home screen). */
         @JavascriptInterface

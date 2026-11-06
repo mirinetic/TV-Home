@@ -15,6 +15,7 @@ import HeroDetailPage from './pages/HeroDetailPage';
 import ContentDetailPage from './pages/ContentDetailPage';
 import AppDetailPage from './pages/AppDetailPage';
 import { launchApp } from './native';
+import { useUpdater, UpdatePrompt, UpdateSettings } from './update';
 import {
   RECOMMENDATIONS,
   APPS,
@@ -154,6 +155,7 @@ export default function App() {
   const [dramaScrollIdx, setDramaScrollIdx] = useState(0);
   const [settingsIdx, setSettingsIdx] = useState(0);
   const [showDashboard, setShowDashboard] = useState(false);
+  const updater = useUpdater();
   const [isPowerOff, setIsPowerOff] = useState(false);
   const [initialFocusTarget, setInitialFocusTarget] = useState(1); // Default: Now Playing (1)
   const [interactionMode, setInteractionMode] = useState(0); // 0: D-pad (default), 1: Hybrid (mouse too)
@@ -341,9 +343,15 @@ export default function App() {
     if (scrollableSections.includes(section)) {
       // Small delay to ensure the overflow-y-auto is applied before scrolling
       const timer = setTimeout(() => {
+        // Centre the section by scrolling only the content list. (scrollIntoView also scrolled the
+        // screen-scaling frame above it, which is overflow-hidden, and the top of the UI got cut off.)
         const element = document.getElementById(`section-${section}`);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const box = scrollRef.current;
+        if (element && box) {
+          const br = box.getBoundingClientRect(), er = element.getBoundingClientRect();
+          const k = br.height / box.clientHeight || 1;   // the UI is drawn scaled
+          const top = box.scrollTop + (er.top - br.top) / k - (box.clientHeight - er.height / k) / 2;
+          box.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
         }
       }, 100); // Increased delay for safety during re-mount
       return () => clearTimeout(timer);
@@ -2022,6 +2030,8 @@ export default function App() {
           </div>
         )}
       </ViewportScaler>
+      <UpdatePrompt u={updater} />
+
       {/* VIRTUAL D-PAD REMOTE & SIMULATOR HANDLE */}
       {showVirtualDPad && <VirtualRemote onClose={() => setShowVirtualDPad(false)} />}
       <SimulatorHandle onClick={() => setShowDashboard(true)} />
@@ -2261,6 +2271,15 @@ export default function App() {
                     ))}
                   </div>
                   <p className="text-[11px] font-medium text-white/20 italic pl-4">* 화면을 와이어프레임(블루프린트) 형식으로 볼 수 있는 모드입니다.</p>
+                </div>
+
+                {/* OPTION 08: App update */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-1.5 h-6 bg-blue-500 rounded-full shadow-[0_0_15px_rgba(59,130,246,0.6)]" />
+                    <label className="text-[14px] font-bold text-white uppercase tracking-widest">08. 앱 업데이트</label>
+                  </div>
+                  <UpdateSettings u={updater} />
                 </div>
 
               </div>

@@ -46,8 +46,11 @@ jobs:
       - name: Describe this build
         id: info
         run: |
-          echo "version=1.0.${GITHUB_RUN_NUMBER}" >> "$GITHUB_OUTPUT"
+          VERSION="1.0.${GITHUB_RUN_NUMBER}"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           printf '%s (%s)' "$(git log -1 --format=%s)" "$(git rev-parse --short HEAD)" > notes.txt
+          python3 -c 'import json,os,sys; json.dump({"versionCode": int(os.environ["GITHUB_RUN_NUMBER"]), "versionName": sys.argv[1], "notes": open("notes.txt").read()}, open("version.json","w"), ensure_ascii=False)' "$VERSION"
+          cat version.json
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
@@ -60,8 +63,21 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ steps.info.outputs.version }}
         run: |
-          gh release create "v${VERSION}" TVHome.apk \
+          gh release create "v${VERSION}" TVHome.apk version.json \
             --repo "${GITHUB_REPOSITORY}" \
             --title "TV Home ${VERSION}" \
             --notes-file notes.txt \
             --target "$(git rev-parse HEAD)"
+
+      # One always-current link, read by the in-app update: .../releases/download/tvhome-latest/TVHome.apk
+      - name: Publish as latest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete tvhome-latest --repo "${GITHUB_REPOSITORY}" --yes --cleanup-tag || true
+          gh release create tvhome-latest TVHome.apk version.json \
+            --repo "${GITHUB_REPOSITORY}" \
+            --title "TV Home latest build" \
+            --notes-file notes.txt \
+            --target "$(git rev-parse HEAD)" \
+            --prerelease

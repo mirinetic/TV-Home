@@ -22,7 +22,7 @@ const ViewportScaler = ({ children }: ViewportScalerProps) => {
   }, []);
 
   return (
-    <div className="w-screen h-screen bg-black flex items-center justify-center overflow-hidden">
+    <div className="w-screen h-screen bg-black flex items-center justify-center overflow-hidden" onScroll={e => { const el = e.currentTarget; if (el.scrollTop || el.scrollLeft) { el.scrollTop = 0; el.scrollLeft = 0; } }}>
       <div 
         style={{ 
           width: '1920px', 
