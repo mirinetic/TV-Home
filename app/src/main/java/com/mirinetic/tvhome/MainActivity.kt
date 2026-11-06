@@ -71,6 +71,12 @@ class MainActivity : Activity() {
     /** Serves a file from assets/www; unknown paths get index.html (single-page app). */
     private fun asset(url: Uri): WebResourceResponse {
         var path = (url.path ?: "/").trimStart('/').ifEmpty { "index.html" }
+        // /appimage/<package>: the installed app's banner or icon (Apps tab)
+        if (path.startsWith("appimage/")) {
+            val png = Apps.imagePng(this, path.removePrefix("appimage/"))
+            return if (png != null) WebResourceResponse("image/png", null, java.io.ByteArrayInputStream(png))
+            else WebResourceResponse("image/png", null, 404, "Not Found", emptyMap(), java.io.ByteArrayInputStream(ByteArray(0)))
+        }
         if (path.contains("..")) path = "index.html"
         val stream = try {
             assets.open("www/$path")
@@ -176,6 +182,23 @@ class MainActivity : Activity() {
         @JavascriptInterface
         fun launchApp(name: String): Boolean {
             val pkg = Apps.find(this@MainActivity, name) ?: return false
+            val intent = Apps.launchIntent(this@MainActivity, pkg) ?: return false
+            runOnUiThread {
+                try {
+                    startActivity(intent)
+                } catch (_: Exception) {
+                }
+            }
+            return true
+        }
+
+        /** The apps that can be opened on this TV, as JSON [{pkg, label}]. */
+        @JavascriptInterface
+        fun installedApps(): String = Apps.listJson(this@MainActivity)
+
+        /** Opens an installed app by package name. */
+        @JavascriptInterface
+        fun launchPackage(pkg: String): Boolean {
             val intent = Apps.launchIntent(this@MainActivity, pkg) ?: return false
             runOnUiThread {
                 try {

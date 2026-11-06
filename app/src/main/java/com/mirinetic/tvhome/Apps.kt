@@ -15,7 +15,8 @@ object Apps {
         "youtube" to listOf("com.google.android.youtube.tv", "com.google.android.youtube"),
         "hbomax" to listOf("com.wbd.stream", "com.hbo.hbonow", "com.hbo.go"),
         "internet" to listOf("com.android.chrome", "org.mozilla.tv.firefox", "com.opera.browser", "com.cloudmosa.puffinTV"),
-        "googleplay" to listOf("com.android.vending")
+        "googleplay" to listOf("com.android.vending"),
+        "livetv" to listOf("com.google.android.tv", "com.google.android.apps.tv.launcherx", "com.android.tv")
     )
 
     private fun norm(s: String) = s.lowercase().replace(Regex("[\\s._-]"), "")
@@ -42,6 +43,34 @@ object Apps {
         // otherwise an installed app whose label matches the tile name
         apps.entries.firstOrNull { norm(it.value) == key }?.let { return it.key }
         return apps.entries.firstOrNull { norm(it.value).startsWith(key) || key.startsWith(norm(it.value)) && norm(it.value).length >= 4 }?.key
+    }
+
+    /** Every app that can be opened, as JSON [{pkg, label}], sorted by label. */
+    fun listJson(ctx: Context): String {
+        val arr = org.json.JSONArray()
+        installed(ctx).entries.sortedBy { it.value.lowercase() }.forEach {
+            arr.put(org.json.JSONObject().put("pkg", it.key).put("label", it.value))
+        }
+        return arr.toString()
+    }
+
+    /** PNG of an app's TV banner (or its icon when it has none), or null. */
+    fun imagePng(ctx: Context, pkg: String): ByteArray? {
+        val pm = ctx.packageManager
+        val d = try {
+            val info = pm.getApplicationInfo(pkg, 0)
+            info.loadBanner(pm) ?: pm.getApplicationBanner(pkg) ?: info.loadIcon(pm)
+        } catch (_: Exception) {
+            null
+        } ?: return null
+        val isBanner = d.intrinsicWidth > d.intrinsicHeight * 1.3
+        val (w, h) = if (isBanner) 480 to 270 else 256 to 256
+        val bmp = android.graphics.Bitmap.createBitmap(w, h, android.graphics.Bitmap.Config.ARGB_8888)
+        d.setBounds(0, 0, w, h)
+        d.draw(android.graphics.Canvas(bmp))
+        val out = java.io.ByteArrayOutputStream()
+        bmp.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, out)
+        return out.toByteArray()
     }
 
     fun launchIntent(ctx: Context, pkg: String): Intent? {

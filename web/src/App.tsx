@@ -10,6 +10,7 @@ import VirtualRemote from './components/VirtualRemote';
 import ViewportScaler, { ScaledLayer } from './components/ViewportScaler';
 import SearchPage from './pages/SearchPage';
 import VisionPage from './pages/VisionPage';
+import { LivePage, GamePage, ArtPage, AppsPage } from './pages/TabPages';
 import PrivacyPage from './pages/PrivacyPage';
 import HeroDetailPage from './pages/HeroDetailPage';
 import ContentDetailPage from './pages/ContentDetailPage';
@@ -1966,6 +1967,13 @@ export default function App() {
                       </section>
                     </div>
                   </>
+                ) : [6, 7, 8, 9].includes(activeTab) ? (
+                  <div className="w-full h-[1080px] relative">
+                    {activeTab === 6 && <LivePage active={section === 'tabContent'} onUp={() => setSection('gnb')} isWireframeMode={isWireframeMode} />}
+                    {activeTab === 7 && <GamePage active={section === 'tabContent'} onUp={() => setSection('gnb')} isWireframeMode={isWireframeMode} />}
+                    {activeTab === 8 && <ArtPage active={section === 'tabContent'} onUp={() => setSection('gnb')} isWireframeMode={isWireframeMode} />}
+                    {activeTab === 9 && <AppsPage active={section === 'tabContent'} onUp={() => setSection('gnb')} isWireframeMode={isWireframeMode} />}
+                  </div>
                 ) : (
                   <div className="w-full h-full min-h-[calc(100vh-160px)] flex flex-col pt-[160px]">
                     <section className="relative w-full flex-1 flex items-center justify-center px-20 pb-32">
